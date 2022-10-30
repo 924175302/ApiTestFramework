@@ -4,7 +4,7 @@ import requests
 class LoginApi():
     #初始化
     def __int__(self):
-        self.url_verify = ""
+        self.url_verify = ""     # TODO
         self.url_login = ""
 
     #获取验证码
