@@ -1,0 +1,32 @@
+[
+  {
+    "describe": "case01 登录成功",
+    "username": "",
+    "password": "",
+    "verity_code": "",
+    "content_type": "",
+    "status_code": 200,
+    "status": 1,
+    "msg": "登录成功"
+  },
+  {
+    "describe": "case02 ",
+    "username": "",
+    "password": "",
+    "verity_code": "",
+    "content_type": "",
+    "status_code": 200,
+    "status": 1,
+    "msg": "登录成功"
+  },
+  {
+    "describe": "",
+    "username": "",
+    "password": "",
+    "verity_code": "",
+    "content_type": "",
+    "status_code": 200,
+    "status": 1,
+    "msg": "登录成功"
+  }
+]
