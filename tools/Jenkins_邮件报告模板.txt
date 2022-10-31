@@ -1,0 +1,20 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<title>${ENV, var="JOB_NAME"}-第${BUILD_NUMBER}次构建日志</title>  
+</head>  
+<body leftmargin="8" marginwidth="0" topmargin="8" marginheight="4" offset="0">  <div>    
+	<h2>项目信息</h2>    
+	<ul>          
+		<li>项目名称：${PROJECT_NAME}</li>        
+		<li>详细测试报告：<a href="${PROJECT_URL}HTML_20Report/">${PROJECT_URL}HTML_20Report/</a></li>        <li>触发原因：${CAUSE}</li>        
+		<li>项目Url：<a href="${PROJECT_URL}">${PROJECT_URL}</a></li>    
+		</ul>    
+		<hr/>
+    		<h2>构建日志</h2>    
+    		<div>${JELLY_SCRIPT,template="html"}</div>    
+        <hr/> 
+</div> 
+</body>  
+</html>

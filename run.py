@@ -11,6 +11,9 @@ suite = unittest.TestSuite()
 suite.addTest(unittest.makeSuite(TestLogin))
 
 report = config.BASE_DIR + "/report/report_{}.html".format(time.strftime("%Y%m%d-%H%M"))
+# Jenkins 配置里需要设置report文件名和地址
+# report = config.BASE_DIR + "/report/report.html"
+
 
 with open(report, "wb") as f:
     # 创建HTMLTestRunner
