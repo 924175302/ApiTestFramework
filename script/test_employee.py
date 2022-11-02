@@ -1,5 +1,6 @@
 import unittest
 from api.empolyee import EmployeeAPI
+import logging
 
 
 class TestEmployee(unittest.TestCase):
@@ -17,6 +18,9 @@ class TestEmployee(unittest.TestCase):
             "WorkNumber": ""
         }
         response = self.employee_api.add_employee(add_employee_data=add_employee_data)
+
+        # 添加日志信息
+        logging.info("添加员工接口返回的信息为：{}".format(response.json()))
 
         # 断言
         self.assertEqual(200, response.status_code)

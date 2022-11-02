@@ -2,16 +2,16 @@ import requests
 
 
 class LoginApi():
-    #初始化
+    # 初始化
     def __int__(self):
         self.url_verify = ""     # TODO
         self.url_login = ""
 
-    #获取验证码
+    # 获取验证码
     def get_verify_code(self, session):
         return session.get(self.url_verify)
 
-    #登录
+    # 登录
     def Login(self, session, username, password, verify_code):
         login_data = {
             "username": "username",

@@ -48,18 +48,18 @@ def build_data_bd():
 
 
 class TestLogin(unittest.TestCase):
-    #前置处理
+    # 前置处理
     def setUp(self):
-        self.login_api = LoginApi()            #实例化接口类
-        self.session = requests.session()      #创建session对象
+        self.login_api = LoginApi()            # 实例化接口类
+        self.session = requests.session()      # 创建session对象
 
-    #后置处理
+    # 后置处理
     def tearDown(self):
         if self.session:
             self.session.close()
 
-    #测试用例
-    #登录成功
+    # 测试用例
+    # 登录成功
     @parameterized.expand(build_data_json())
     def test01_login(self, username, password, verify_code, content_type, status_code, status, msg):
         # 调用验证码接口获取验证，并进行断言
@@ -75,6 +75,6 @@ class TestLogin(unittest.TestCase):
         self.assertIn(msg, response_login.json().get("msg"))
 
         # 提取Token信息
-        config.TOKEN = "Bearer " + response_login.json().get("")    #TODO
+        config.TOKEN = "Bearer " + response_login.json().get("")    # TODO
         config.headers_data["Authorization"] = config.TOKEN
         print("Token值：", config.TOKEN)
