@@ -2,6 +2,7 @@ import json
 import requests
 import unittest
 import config
+import random
 from tools.dbutil import DButil
 from api.login import LoginApi
 from parameterized import parameterized
@@ -42,7 +43,7 @@ def build_data_bd():
         # status_code = case_data[]
         # status = case_data[]
         # msg = case_data[]
-        #test_data.append((username, password, verify_code, content_type, status_code, status, msg))
+        # test_data.append((username, password, verify_code, content_type, status_code, status, msg))
         print(test_data)
     return test_data
 
@@ -78,3 +79,30 @@ class TestLogin(unittest.TestCase):
         config.TOKEN = "Bearer " + response_login.json().get("")    # TODO
         config.headers_data["Authorization"] = config.TOKEN
         print("Token值：", config.TOKEN)
+
+
+    # 参数为随机小数时获取图片验证码
+    def test01_get_img_code(self):
+        r = random.random()
+        response = self.login_api.getImgCode(self.session, str(r))
+        self.assertEqual(200, response.status_code)
+
+
+    # 参数为随机整数时获取图片验证码
+    def test02_get_img_code(self):
+        r = random.randint(10000, 90000)
+        response = self.login_api.getImgCode(self.session, str(r))
+        self.assertEqual(200, response.status_code)
+
+    # 参数为空
+    def test03_get_img_code(self):
+        response = self.login_api.getImgCode(self.session, "")
+        self.assertEqual(404, response.status_code)
+
+    # 参数为随机字母
+    def test04_get_img_code(self):
+        r = random.sample("abcdefghijklm", 8)
+        # r为列表，转换为str
+        r1 = ''.join(r)
+        response = self.login_api.getImgCode(self.session, r1)
+        self.assertEqual(200, response.status_code)
