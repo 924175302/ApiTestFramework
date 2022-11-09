@@ -20,9 +20,9 @@ class LoginApi():
     # 登录
     def Login(self, session, username, password, verify_code):
         login_data = {
-            "username": "username",
-            "password": "password",
-            "verify_code": "verify_code"
+            "username": username,
+            "password": password,
+            "verify_code": verify_code
         }
         return session.post(url=self.url_login, data=login_data)
 
@@ -30,11 +30,13 @@ class LoginApi():
         url = self.url_getImgCode + r
         return session.get(url=url)
 
-    def register(self, session, phone, password, imgVerifyCode, phoneCode):
+    def register(self, session, phone, password, imgVerifyCode="8888", phoneCode="6666", dyServer="on", invitePhone=""):
         register_data = {
             "phone": phone,
             "password": password,
             "imgVerifyCode": imgVerifyCode,
-            "phoneCode": phoneCode
+            "phoneCode": phoneCode,
+            "dyServer": dyServer,
+            "invitePhone": invitePhone
         }
         return session.post(url=self.url_register, data=register_data)

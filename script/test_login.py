@@ -1,8 +1,10 @@
 import json
+import logging
 import requests
 import unittest
 import config
 import random
+import utils
 from tools.dbutil import DButil
 from api.login import LoginApi
 from parameterized import parameterized
@@ -49,6 +51,11 @@ def build_data_bd():
 
 
 class TestLogin(unittest.TestCase):
+    phone1 = ""
+    password = ""
+    imgCode = ""
+    verifyCode = ""
+
     # 前置处理
     def setUp(self):
         self.login_api = LoginApi()            # 实例化接口类
@@ -70,7 +77,7 @@ class TestLogin(unittest.TestCase):
         self.assertIn(content_type, response_verify.headers.get("Content-Type"))
 
         # 传入用户名、密码和验证码
-        response_login = self.login_api.Login(self, "username", "password", "verify_code")
+        response_login = self.login_api.Login(self, username, password, verify_code)
         self.assertEqual(status_code, response_login.status_code)
         self.assertEqual(status, response_login.json().get("status"))
         self.assertIn(msg, response_login.json().get("msg"))
@@ -80,6 +87,11 @@ class TestLogin(unittest.TestCase):
         config.headers_data["Authorization"] = config.TOKEN
         print("Token值：", config.TOKEN)
 
+    def test_login_wrong_password(self, phone1):
+        wrong_password = "error"
+        response = self.login_api.Login(self.session, username=phone1, password=wrong_password)
+        logging.info("login response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 100, "密码错误")
 
     # 参数为随机小数时获取图片验证码
     def test01_get_img_code(self):
@@ -106,3 +118,26 @@ class TestLogin(unittest.TestCase):
         r1 = ''.join(r)
         response = self.login_api.getImgCode(self.session, r1)
         self.assertEqual(200, response.status_code)
+
+    def test05_register_success(self, phone1):
+        r = random.random()
+        response = self.login_api.getImgCode(self.session, str(r))
+        self.assertEqual(200, response.status_code)
+        response = self.login_api.get_verify_code(self.session, phone1)
+        logging.info("register response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 100, "密码不能为空")
+
+    def test06_login_wrong_password(self):
+        wrong_password = "error"
+        response = self.login_api.Login(self.session, self.phone1, wrong_password)
+        logging.info("login response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 100, "密码错误1次，达到3次将锁定账户")
+
+        response = self.login_api.Login(self.session, self.phone1, wrong_password)
+        logging.info("login response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 100, "密码错误2次，达到3次将锁定账户")
+
+        response = self.login_api.Login(self.session, self.phone1, wrong_password)
+        logging.info("login response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 100, "由于连续输入错误密码达到上线，账号已被锁定，请于1分钟后重试")
+
