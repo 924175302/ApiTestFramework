@@ -38,7 +38,7 @@ class Test_Approve(unittest.TestCase):
     # 认证失败 姓名为空
     def test02_approve_realname_is_null(self):
         # 1、首先登录
-        response = self.login_api.Login(self.session, self.)
+        response = self.login_api.Login(self.session, self.phone1)
         logging.info("approve response={}".format(response.json()))
         utils.common_assert(self, response, 200, 100, "登录成功")
 
