@@ -37,7 +37,7 @@ def build_data_bd():
     db_data = DButil.exec_sql(sql)
     test_data = []
     # 通过bd中数据的下表获取响应的字段信息
-    for case_data in db_data:             # TODO
+    for case_data in db_data:  # TODO
         # username = case_data[]
         # password = case_data[]
         # verify_code = case_data[]
@@ -58,8 +58,8 @@ class TestLogin(unittest.TestCase):
 
     # 前置处理
     def setUp(self):
-        self.login_api = LoginApi()            # 实例化接口类
-        self.session = requests.session()      # 创建session对象
+        self.login_api = LoginApi()  # 实例化接口类
+        self.session = requests.session()  # 创建session对象
 
     # 后置处理
     def tearDown(self):
@@ -83,7 +83,7 @@ class TestLogin(unittest.TestCase):
         self.assertIn(msg, response_login.json().get("msg"))
 
         # 提取Token信息
-        config.TOKEN = "Bearer " + response_login.json().get("")    # TODO
+        config.TOKEN = "Bearer " + response_login.json().get("")  # TODO
         config.headers_data["Authorization"] = config.TOKEN
         print("Token值：", config.TOKEN)
 
@@ -98,7 +98,6 @@ class TestLogin(unittest.TestCase):
         r = random.random()
         response = self.login_api.getImgCode(self.session, str(r))
         self.assertEqual(200, response.status_code)
-
 
     # 参数为随机整数时获取图片验证码
     def test02_get_img_code(self):
@@ -118,6 +117,20 @@ class TestLogin(unittest.TestCase):
         r1 = ''.join(r)
         response = self.login_api.getImgCode(self.session, r1)
         self.assertEqual(200, response.status_code)
+
+    @parameterized.expand(utils.read_imgVerify_data("imgVerify.json"))
+    def test_get_img_code(self, type, status_code):
+        r = ''
+        if type == "float":
+            r = random.random()
+        elif type == "int":
+            r = random.randint()
+        elif type == "char":
+            #  从制定序列中获取制定长度
+            r = ''.join(random.sample("abcdefghijklm", 8))
+            response = self.login_api.getImgCode(self.session, r)
+        self.assertEqual(status_code, response.status_code)
+
 
     def test05_register_success(self, phone1):
         r = random.random()
@@ -140,4 +153,3 @@ class TestLogin(unittest.TestCase):
         response = self.login_api.Login(self.session, self.phone1, wrong_password)
         logging.info("login response = {}".format(response.json()))
         utils.common_assert(self, response, 200, 100, "由于连续输入错误密码达到上线，账号已被锁定，请于1分钟后重试")
-

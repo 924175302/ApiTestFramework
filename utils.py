@@ -1,6 +1,8 @@
 # unitest公共断言方法
+import json
 import logging
 import os.path
+import config
 from logging import handlers
 
 
@@ -37,6 +39,16 @@ def init_logging():
     logger.addHandler(sf)
     logger.addHandler(fh)
 
-
 init_logging()
 logging.info("")
+
+def read_imgVerify_data(file_name):
+    file = config.BASE_URL + "/data/" + file_name
+    test_case_data = []
+    with open(file, encoding="utf-8") as f:
+        verify_data = json.load(f)
+        test_data_list = verify_data.get("test_get_img_verify_code")
+        for test_data in test_data_list:
+            test_case_data.append((test_data.get("type"), test_data.get()))
+
+    return test_case_data

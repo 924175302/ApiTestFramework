@@ -1,7 +1,8 @@
 import requests
 import config
 
-class LoginApi():
+
+class LoginApi:
     # 初始化
     def __int__(self):
         self.url_verify = config.BASE_URL + ""     # TODO

@@ -65,3 +65,14 @@ class DButil():
             cls.__close_cursor()
             # 关闭连接
             cls.__close_conn()
+
+    @classmethod
+    def delete(cls, db_name, sql):
+        try:
+            cursor = cls.__get_cursor()
+            cursor.execute(sql)
+        except Exception as e:
+            cls.__conn.rollback()
+        finally:
+            cls.__close_cursor()
+            cls.__get_conn()
