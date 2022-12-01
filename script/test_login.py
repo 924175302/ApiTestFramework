@@ -153,3 +153,20 @@ class TestLogin(unittest.TestCase):
         response = self.login_api.Login(self.session, self.phone1, wrong_password)
         logging.info("login response = {}".format(response.json()))
         utils.common_assert(self, response, 200, 100, "由于连续输入错误密码达到上线，账号已被锁定，请于1分钟后重试")
+
+    @parameterized.expand(utils.read_register_data("register.json()"))
+    def test_register(self, phone, pwd, imgVerifyCode, phoneCode, invitePhone, status_code, status, description):
+        # 获取图片验证码
+        r = random.random()
+        response = self.login_api.getImgCode(self.session, str(r))
+        self.assertEqual(200, response.status_code)
+
+        # 获取短信验证码
+        response = self.login_api.get_verify_code(self.session, self.phone1)
+        logging.info("get verify code response = {}".format(response.json()))
+        utils.common_assert(self, response, 200, 200, "短信发送成功")
+
+        # 使用参数化的测试数据进行注册， 并返回对应的结果
+        response = self.login_api.register(self.session, phone, pwd, imgVerifyCode, phoneCode, invitePhone, status_code)
+        utils.common_assert(self, response, status_code, status, description)
+

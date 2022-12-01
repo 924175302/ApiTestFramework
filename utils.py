@@ -39,8 +39,10 @@ def init_logging():
     logger.addHandler(sf)
     logger.addHandler(fh)
 
+
 init_logging()
 logging.info("")
+
 
 def read_imgVerify_data(file_name):
     file = config.BASE_URL + "/data/" + file_name
@@ -50,5 +52,36 @@ def read_imgVerify_data(file_name):
         test_data_list = verify_data.get("test_get_img_verify_code")
         for test_data in test_data_list:
             test_case_data.append((test_data.get("type"), test_data.get()))
-
     return test_case_data
+
+
+def read_register_data(filename):
+    file = config.BASE_URL + "/data" + filename
+    test_case_data = []
+    with open(file, encoding="utf-8") as f:
+        # json 转化为字典
+        register_data = json.load(f)
+        test_data_list = register_data.get("test_register")
+        for test_data in test_data_list:
+            test_case_data.append((test_data.get("phone"), test_data.get("pwd"), test_data.get("")))
+    return test_case_data
+
+
+# 统一读取所有参数数据文件的方法
+def read_param_data(filename, method_name, param_names,):
+    # filename：参数数据文件名
+    # method_name: 参数数据文件中定义的测试数据列表名称，如rest_register
+    # param_name: 参数数据文件中一组测试数据中所有的参数组成的字符串
+
+    file = config.BASE_URL + "/data/" + filename
+    test_case_data = []
+    with open(file, encoding="utf-8") as f:
+        file_data = json.load(f)
+        test_data_list = file_data.get(method_name)
+        for test_data in test_data_list:
+            test_params = []
+            for param in param_names.split(","):
+                test_params.append(test_data.get(param))
+            test_case_data.append(test_params)
+    return test_case_data
+

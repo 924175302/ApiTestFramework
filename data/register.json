@@ -1,0 +1,22 @@
+{
+  "test_register": [
+    {
+      "desc": "输入必填项，成功",
+      "phone": "",
+      "pwd": "",
+      "imgVerifyCode": "",
+      "phoneCode": "",
+      "dyServer": "",
+      "invite_phone": ""
+    },
+    {
+      "desc": "输入必填项，成功",
+      "phone": "",
+      "pwd": "",
+      "imgVerifyCode": "",
+      "phoneCode": "",
+      "dyServer": "",
+      "invite_phone": ""
+    }
+  ]
+}
